@@ -1,0 +1,52 @@
+name: Testing with Pytest
+run-name: Pytest on ${{ github.ref_name }}
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v7
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v7
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run tests with coverage and generate XML reports
+      run: |
+        pytest --junitxml=pytest-report.xml \
+               --cov=src --cov-report=term-missing \
+               --cov-report=xml --cov-fail-under=90
+      continue-on-error: false
+
+    - name: Upload test and coverage results
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: test-results-py${{ matrix.python-version }}
+        path: |
+          pytest-report.xml
+          coverage.xml
+
+    - name: Notify on success
+      if: success()
+      run: echo "Tests passed successfully on Python ${{ matrix.python-version }}"
+
+    - name: Notify on failure
+      if: failure()
+      run: echo "Tests failed on Python ${{ matrix.python-version }}"
