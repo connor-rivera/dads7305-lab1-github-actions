@@ -1,5 +1,8 @@
 # DADS 7305 Lab 1: GitHub Actions CI with Pytest and Unittest
 
+![Pytest](https://github.com/connor-rivera/dads7305-lab1-github-actions/actions/workflows/pytest_action.yml/badge.svg)
+![Unittests](https://github.com/connor-rivera/dads7305-lab1-github-actions/actions/workflows/unittest_action.yml/badge.svg)
+
 A small Python calculator module whose tests run automatically through GitHub Actions on every push and pull request to `main`. The pytest workflow runs on three Python versions and enforces a minimum test coverage.
 
 This project is based on Prof. Ramin Mohammadi's [MLOps Github_Labs/Lab1](https://github.com/raminmohammadi/MLOps/tree/main/Labs/Github_Labs/Lab1). The changes I made to it are listed in the section labeled '## Changes from the original lab'
